@@ -16,8 +16,7 @@ var tfs = require('tfs')
 
 var exports = function(name, options, callback) {
   if (typeof arguments[arguments.length - 1] === 'function') {
-    exports.define.apply(exports, arguments);
-    return exports;
+    return exports.define.apply(exports, arguments);
   } else if (arguments.length === 1) {
     return exports.get(name);
   } else {
@@ -64,7 +63,7 @@ exports.define = function(name, options, block) {
       break;
   }
 
-  exports.generators[name] = defineGenerator(name, options || {}, block);
+  return exports.generators[name] = defineGenerator(name, options || {}, block);
 }
 
 /**
