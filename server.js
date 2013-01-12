@@ -67,6 +67,41 @@ exports.define = function(name, options, block) {
 }
 
 /**
+ * Searches through these directories to find templates:
+ *     - ./generators
+ *     - ./lib/generators
+ *     - ~/.tgen/generators
+ *
+ * Note: this will probably be moved to a separate library.
+ */
+exports.lookup = function(directories) {
+  directories || (directories = []);
+
+  directories.push(tfs.join(process.cwd(), 'generators'));
+  directories.push(tfs.join(process.cwd(), 'lib/generators'));
+  directories.push(tfs.join(process.env.HOME, '.tgen/generators'));
+
+  var fn;
+
+  directories.forEach(function(directoryPath) {
+    if (tfs.directoryExistsSync(directoryPath)) {
+      tfs.directoryNamesSync(directoryPath).forEach(function(generatorName) {
+        try {
+          fn = require(tfs.join(directoryPath, generatorName));
+          if (fn) {
+            exports.define(generatorName, {
+              sourcePath: tfs.join(directoryPath, generatorName, 'templates')
+            }, fn);
+          }
+        } catch (error) {
+          //
+        }
+      });
+    }
+  });
+}
+
+/**
  * Generator constructor.
  *
  * generator.run('app', {destinationPath: '.'});
@@ -188,8 +223,15 @@ GeneratorPrototype.createDirectory = function(directoryPath, block) {
  */
 
 GeneratorPrototype.template = function(templatePath, targetPath) {
-  var content = tfs.readFileSync(this.toSourcePath(templatePath))
-    , content = require('ejs').render(content.toString(), this.locals());
+  var sourcePath = this.toSourcePath(templatePath)
+    , content = tfs.readFileSync(sourcePath).toString()
+    , locals = this.locals();
+
+  locals.filename = sourcePath;
+
+  content = require('ejs').render(content, locals);
+
+  delete locals.filename;
 
   return this.createFile(targetPath || templatePath, content);
 }

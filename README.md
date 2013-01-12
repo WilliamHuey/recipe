@@ -16,6 +16,12 @@ Browser:
 <script src="http://cloud.github.com/tower/generator.js"></script>
 ```
 
+You can also install it globally and use a simple command-line version of it:
+
+```
+npm install tgen -g
+```
+
 ## Usage
 
 This library doesn't require anything on the command line. It's just the barebones functionality common to generators, and should be easy to build upon.
@@ -24,14 +30,15 @@ Define a custom template:
 
 ``` javascript
 // myTemplateGenerator.js
-var generator = require('tgen');
+var generator = require('tgen')
+  , tcase = require('t-case');
 
 generator('my-template', function() {
   var projectName = this.projectName;
 
   this.locals({
       projectName: projectName
-    , projectNameTitle: projectName
+    , projectNameTitle: tcase.titleCase(projectName)
     , userRealName: 'Lance Pollard'
     , userTwitterName: 'viatropos'
     , userGitHubName: 'viatropos'
@@ -102,6 +109,10 @@ npm install phantomjs chai
 ## TODO
 
 Undo feature where it remembers the last state of your app before making changes, and it can reverse it without having to write teardown code.
+
+## Other interesting stuff
+
+- https://github.com/flatiron/nconf
 
 ## MIT License
 

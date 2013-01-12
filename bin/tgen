@@ -30,4 +30,6 @@ generator('template', {sourcePath: __dirname}, function() {
   });
 });
 
+generator.lookup();
+
 generator(process.argv[2]).run(options);
