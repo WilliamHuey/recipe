@@ -1,0 +1,19 @@
+{
+  "name": "tgen",
+  "version": "0.1.0-2",
+  "main": "./server.js",
+  "author": "Lance Pollard <lancejpollard@gmail.com>",
+  "devDependencies": {
+    "chai": "~1.4.2",
+    "mocha": "~1.8.1"
+  },
+  "bin": {
+    "tgen": "./bin/tgen"
+  },
+  "dependencies": {
+    "tfs": ">= 0.1.0"
+  },
+  "optionalDependencies": {
+    "ejs": "~0.8.3"
+  }
+}

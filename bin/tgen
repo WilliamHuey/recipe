@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+var generator = require('../server')
+  , templateName = process.argv[2]
+  , options = {
+      targetPath: process.cwd()
+    , templateName: templateName
+    , projectName: process.argv[3] }
+
+if (!templateName || templateName.match(/(?:-h|--help)/)) {
+  console.log([
+      ''
+    , 'Usage:'
+    , ''
+    , '  tgen <template> <name>'
+    , ''
+  ].join("\n"));
+
+  process.exit();
+}
+
+generator('template', {sourcePath: __dirname}, function() {
+  var projectName = this.projectName;
+
+  this.directory(projectName, function() {
+    this.template('template.js');
+    this.directory('templates', function() {
+      this.file('README.md', '# <%= projectName %>');
+    });
+  });
+});
+
+generator(process.argv[2]).run(options);
