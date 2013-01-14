@@ -66,6 +66,12 @@ exports.define = function(name, options, block) {
   return exports.generators[name] = defineGenerator(name, options || {}, block);
 }
 
+exports.lookupDirectories = [
+    tfs.join(process.cwd(), 'generators')
+  , tfs.join(process.cwd(), 'lib/generators')
+  , tfs.join(process.env.HOME, '.tgen/generators')
+];
+
 /**
  * Searches through these directories to find templates:
  *     - ./generators
@@ -74,30 +80,52 @@ exports.define = function(name, options, block) {
  *
  * Note: this will probably be moved to a separate library.
  */
-exports.lookup = function(directories) {
+
+exports.lookup = function(directories, depth) {
   directories || (directories = []);
 
-  directories.push(tfs.join(process.cwd(), 'generators'));
-  directories.push(tfs.join(process.cwd(), 'lib/generators'));
-  directories.push(tfs.join(process.env.HOME, '.tgen/generators'));
+  if (depth == null) depth = 2;
 
-  var fn;
+  directories.forEach(function(directoryPath, i) {
+    directories[i] = tfs.absolutePath(directoryPath);
+  });
 
-  directories.forEach(function(directoryPath) {
+  directories = directories.concat(exports.lookupDirectories);
+
+  var generatorPath, sourcePath, fn;
+
+  function lookup(directoryPath, currentDepth, namespace) {
+    var traverseNext = currentDepth < depth;
+
     if (tfs.directoryExistsSync(directoryPath)) {
       tfs.directoryNamesSync(directoryPath).forEach(function(generatorName) {
+        generatorPath = tfs.join(directoryPath, generatorName);
+
+        if (namespace)
+          generatorName = namespace + ':' + generatorName;
+
         try {
-          fn = require(tfs.join(directoryPath, generatorName));
-          if (fn) {
-            exports.define(generatorName, {
-              sourcePath: tfs.join(directoryPath, generatorName, 'templates')
-            }, fn);
+          sourcePath = tfs.join(generatorPath, 'templates');
+
+          if (tfs.existsSync(sourcePath)) {
+            fn = require(generatorPath);
+            if (fn)
+              exports.define(generatorName, {sourcePath: sourcePath}, fn);
+          } else {
+            if (traverseNext)
+              lookup(generatorPath, currentDepth + 1, generatorName);
           }
         } catch (error) {
+          if (traverseNext)
+            lookup(generatorPath, currentDepth + 1, generatorName);
           //
         }
       });
     }
+  }
+
+  directories.forEach(function(directoryPath) {
+    lookup(directoryPath, 0);
   });
 }
 
@@ -184,8 +212,7 @@ GeneratorPrototype.removeFile = function() {
  */
 
 GeneratorPrototype.fileExists = function(filePath) {
-  tfs.fileExistsSync(filePath);
-  return this;
+  return tfs.fileExistsSync(filePath);
 }
 
 /**

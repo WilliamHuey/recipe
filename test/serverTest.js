@@ -1,9 +1,9 @@
 var generator = require('../server')
-  , csfs = require('cs-fs')
+  , tfs = require('tfs')
   , chai = require('chai')
   , assert = chai.assert;
 
-describe('cs-generator', function() {
+describe('tgen', function() {
   test('define and run a generator', function(done) {
     var called = 0;
 
@@ -87,11 +87,41 @@ describe('cs-generator', function() {
       this.createFile('modelTest.js', 'describe("App.Model")');
     });
 
-    generator('model').run(function() {
+    generator('model').run({targetPath: 'tmp'}, function() {
       assert.equal(invoked['model'], 1);
       assert.equal(invoked['test:model'], 1);
 
       done();
     });
   });
+
+  test('lookup', function() {
+    var lookupDirectories = generator.lookupDirectories;
+
+    generator.lookupDirectories = [];
+
+    tfs.createDirectorySync('tmp');
+    tfs.createDirectorySync('tmp/generators');
+    tfs.createDirectorySync('tmp/generators/level1');
+    tfs.createDirectorySync('tmp/generators/level1/level2');
+    tfs.createDirectorySync('tmp/generators/level1/level2/templates');
+    tfs.createFileSync('tmp/generators/level1/level2/index.js', "module.exports = function() { this.createFile('tmp/level2File.txt'); }");
+
+    generator.lookup(['tmp/generators']);
+
+    assert.equal(
+        Object.keys(generator.generators).sort().join(',')
+      , 'app,level1:level2,model,test:model'
+    );
+
+    generator.lookupDirectories = lookupDirectories;
+  });
+
+  /*
+  test('require module inside generator', function(done) {
+    generator.lookup();
+
+    generator('library').run(done);
+  });
+  */
 });
