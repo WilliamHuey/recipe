@@ -1,6 +1,6 @@
 {
   "name": "tgen",
-  "version": "0.1.0-2",
+  "version": "0.1.0-3",
   "main": "./server.js",
   "author": "Lance Pollard <lancejpollard@gmail.com>",
   "devDependencies": {
@@ -11,7 +11,7 @@
     "tgen": "./bin/tgen"
   },
   "dependencies": {
-    "tfs": ">= 0.1.0"
+    "t-fs": ">= 0.1.0"
   },
   "optionalDependencies": {
     "ejs": "~0.8.3"

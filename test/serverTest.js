@@ -1,5 +1,5 @@
 var generator = require('../server')
-  , tfs = require('tfs')
+  , tfs = require('t-fs')
   , chai = require('chai')
   , assert = chai.assert;
 
