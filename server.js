@@ -1,4 +1,4 @@
-var tfs = require('tfs')
+var tfs = require('t-fs')
   , extend = require('./extend')//require('cs-extend');
   , mixin = extend.mixin;
 

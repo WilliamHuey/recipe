@@ -1,6 +1,6 @@
 {
   "name": "tgen",
-  "version": "0.1.0-3",
+  "version": "0.1.0-4",
   "main": "./server.js",
   "author": "Lance Pollard <lancejpollard@gmail.com>",
   "devDependencies": {
