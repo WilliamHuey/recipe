@@ -1,19 +1,15 @@
-# tgen
+# Tower Generator
 
-Fast code generator. No dependencies. Just an idea for now.
+[![Build Status](https://secure.travis-ci.org/tower/tower-generator.png)](http://travis-ci.org/tower/tower-generator)
+
+Fast code generator.
 
 ## Install
 
 Node:
 
 ```
-npm install tgen
-```
-
-Browser:
-
-``` html
-<script src="http://cloud.github.com/tower/generator.js"></script>
+npm install tower-generator
 ```
 
 You can also install it globally and use a simple command-line version of it:
@@ -30,15 +26,15 @@ Define a custom template:
 
 ``` javascript
 // myTemplateGenerator.js
-var generator = require('tgen')
-  , tcase = require('t-case');
+var generator = require('tower-generator')
+  , incase = require('tower-incase');
 
 generator('my-template', function() {
   var projectName = this.projectName;
 
   this.locals({
       projectName: projectName
-    , projectNameTitle: tcase.titleCase(projectName)
+    , projectNameTitle: incase.titleCase(projectName)
     , userRealName: 'Lance Pollard'
     , userTwitterName: 'viatropos'
     , userGitHubName: 'viatropos'

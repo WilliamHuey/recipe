@@ -1,4 +1,4 @@
-var tfs = require('t-fs')
+var tfs = require('tower-fs')
   , extend = require('./extend')//require('cs-extend');
   , mixin = extend.mixin;
 
@@ -82,7 +82,7 @@ exports.lookupDirectories = [
  */
 
 exports.lookup = function(directories, depth) {
-  directories || (directories = []);
+  directories || (directories = exports.lookupDirectories);
 
   if (depth == null) depth = 2;
 
@@ -90,14 +90,12 @@ exports.lookup = function(directories, depth) {
     directories[i] = tfs.absolutePath(directoryPath);
   });
 
-  directories = directories.concat(exports.lookupDirectories);
-
   var generatorPath, sourcePath, fn;
 
   function lookup(directoryPath, currentDepth, namespace) {
     var traverseNext = currentDepth < depth;
 
-    if (tfs.directoryExistsSync(directoryPath)) {
+    if (tfs.existsSync(directoryPath)) {
       tfs.directoryNamesSync(directoryPath).forEach(function(generatorName) {
         generatorPath = tfs.join(directoryPath, generatorName);
 
@@ -128,6 +126,16 @@ exports.lookup = function(directories, depth) {
     lookup(directoryPath, 0);
   });
 }
+
+/*
+exports.save = function(projectName) {
+  // projectName
+}
+
+exports.edit = function(projectName) {
+  tfs.open('~/.tgen/generators/' + projectName.split(':').join('/'));
+}
+*/
 
 /**
  * Generator constructor.
@@ -211,8 +219,8 @@ GeneratorPrototype.removeFile = function() {
  * Check if file exists.
  */
 
-GeneratorPrototype.fileExists = function(filePath) {
-  return tfs.fileExistsSync(filePath);
+GeneratorPrototype.exists = function(filePath) {
+  return tfs.existsSync(filePath);
 }
 
 /**
@@ -260,7 +268,8 @@ GeneratorPrototype.template = function(templatePath, targetPath) {
 
   delete locals.filename;
 
-  return this.createFile(targetPath || templatePath, content);
+  this.createFile(targetPath || templatePath, content);
+  return this;
 }
 
 /**
@@ -286,8 +295,15 @@ GeneratorPrototype.locals = function(obj) {
  * Copy a file from source to target path.
  */
 
+GeneratorPrototype.cp =
 GeneratorPrototype.copy = function(fromPath, toPath) {
   tfs.copyFileSync(this.toSourcePath(fromPath), this.toTargetPath(toPath || fromPath));
+  return this;
+}
+
+GeneratorPrototype.rm =
+GeneratorPrototype.remove = function(filePath) {
+  tfs.removeSync(this.toTargetPath(fromPath));
   return this;
 }
 
@@ -305,7 +321,8 @@ GeneratorPrototype.invoke = function(name, options, callback) {
 
   options = mixin(options, this.locals());
 
-  return exports.get(name).run(options, callback);
+  exports.get(name).run(options, callback);
+  return this;
 }
 
 /**

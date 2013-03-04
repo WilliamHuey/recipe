@@ -1,17 +1,17 @@
 {
   "name": "tgen",
   "version": "0.1.0-4",
-  "main": "./server.js",
+  "main": "./index.js",
   "author": "Lance Pollard <lancejpollard@gmail.com>",
   "devDependencies": {
     "chai": "~1.4.2",
     "mocha": "~1.8.1"
   },
   "bin": {
-    "tgen": "./bin/tgen"
+    "tower-generator": "./bin/tower-generator"
   },
   "dependencies": {
-    "t-fs": ">= 0.1.0"
+    "tower-fs": ">= 0.1.0"
   },
   "optionalDependencies": {
     "ejs": "~0.8.3"

@@ -1,5 +1,5 @@
-var generator = require('../server')
-  , tfs = require('t-fs')
+var generator = require('..')
+  , tfs = require('tower-fs')
   , chai = require('chai')
   , assert = chai.assert;
 
@@ -41,7 +41,7 @@ describe('tgen', function() {
     });
 
     generator('app').run({targetPath: 'tmp'}, function() {
-      assert.isTrue(this.fileExists('tmp/file.txt'));
+      assert.isTrue(this.exists('tmp/file.txt'));
       done();
     });
   });
@@ -58,9 +58,9 @@ describe('tgen', function() {
     });
 
     generator('app').run({targetPath: 'tmp'}, function() {
-      assert.isTrue(this.fileExists('tmp/README.md'));
-      assert.isTrue(this.fileExists('tmp/lib/index.js'), 'tmp/lib/index.js');
-      assert.isTrue(this.fileExists('tmp/outside.js'), 'tmp/outside.js');
+      assert.isTrue(this.exists('tmp/README.md'));
+      assert.isTrue(this.exists('tmp/lib/index.js'), 'tmp/lib/index.js');
+      assert.isTrue(this.exists('tmp/outside.js'), 'tmp/outside.js');
       done();
     });
 
