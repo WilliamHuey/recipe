@@ -1,6 +1,6 @@
 # Tower Generator
 
-[![Build Status](https://secure.travis-ci.org/tower/tower-generator.png)](http://travis-ci.org/tower/tower-generator)
+[![Build Status](https://travis-ci.org/tower/generator.png)](https://travis-ci.org/tower/generator)
 
 Fast code generator.
 
