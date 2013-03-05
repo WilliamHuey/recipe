@@ -137,6 +137,10 @@ exports.edit = function(projectName) {
 }
 */
 
+exports.list = function() {
+  //
+}
+
 /**
  * Generator constructor.
  *

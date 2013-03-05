@@ -34,10 +34,13 @@ generator.lookup();
 
 switch (templateName) {
   case 'edit':
-    generator.edit(projectName);
+    generator.edit(options.projectName);
     break;
   case 'save':
-    generator.save(projectName);
+    generator.save(options.projectName);
+    break;
+  case 'list':
+    generator.list();
     break;
   default:
     generator(process.argv[2]).run(options);

@@ -1,6 +1,6 @@
 {
   "name": "tower-generator",
-  "version": "0.1.0-4",
+  "version": "0.1.0-5",
   "main": "./index.js",
   "author": "Lance Pollard <lancejpollard@gmail.com>",
   "devDependencies": {
