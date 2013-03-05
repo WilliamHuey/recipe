@@ -1,2 +1,5 @@
-node_modules
 *.log
+tmp
+node_modules
+.DS_Store
+components

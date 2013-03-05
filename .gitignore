@@ -1,6 +1,5 @@
 *.log
 tmp
 node_modules
-templates
 .DS_Store
 components
