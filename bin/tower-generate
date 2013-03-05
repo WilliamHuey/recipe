@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var generator = require('../server')
+var generator = require('..')
   , templateName = process.argv[2]
   , options = {
       targetPath: process.cwd()
@@ -12,7 +12,7 @@ if (!templateName || templateName.match(/(?:-h|--help)/)) {
       ''
     , 'Usage:'
     , ''
-    , '  tgen <template> <name>'
+    , '  tower-generate <template> <name>'
     , ''
   ].join("\n"));
 

@@ -1,4 +1,4 @@
-var generator = require('tgen');
+var generator = require('tower-generator');
 
 generator('<%= projectName %>', function() {
   var projectName = this.projectName;

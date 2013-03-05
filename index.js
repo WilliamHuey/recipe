@@ -69,7 +69,7 @@ exports.define = function(name, options, block) {
 exports.lookupDirectories = [
     tfs.join(process.cwd(), 'generators')
   , tfs.join(process.cwd(), 'lib/generators')
-  , tfs.join(process.env.HOME, '.tgen/generators')
+  , tfs.join(process.env.HOME, '.tower/generators')
 ];
 
 /**

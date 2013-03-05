@@ -1,5 +1,5 @@
 {
-  "name": "tgen",
+  "name": "tower-generator",
   "version": "0.1.0-4",
   "main": "./index.js",
   "author": "Lance Pollard <lancejpollard@gmail.com>",
@@ -8,7 +8,7 @@
     "mocha": "~1.8.1"
   },
   "bin": {
-    "tower-generator": "./bin/tower-generator"
+    "tower-generate": "./bin/tower-generate"
   },
   "dependencies": {
     "tower-fs": ">= 0.1.0"
