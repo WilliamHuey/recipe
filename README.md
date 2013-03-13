@@ -1,6 +1,6 @@
 # Tower Recipe
 
-Fast code **recipe**.
+Fast code **generator**.
 
 ## Install
 
