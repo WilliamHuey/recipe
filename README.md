@@ -1,27 +1,27 @@
 # Tower Recipe
 
-Fast code **generator**.
+Fast code **recipe**.
 
 ## Install
 
 Node:
 
 ```
-npm install tower-generator
+npm install tower-recipe
 ```
 
 ## Usage
 
-This library doesn't require anything on the command line. It's just the barebones functionality common to generators, and should be easy to build upon.
+This library doesn't require anything on the command line. It's just the barebones functionality common to recipes, and should be easy to build upon.
 
 Define a custom template:
 
 ``` javascript
-// myTemplateGenerator.js
-var generator = require('tower-generator')
+// myTemplateRecipe.js
+var recipe = require('tower-recipe')
   , incase = require('tower-incase');
 
-generator('my-template', function() {
+recipe('my-template', function() {
   var projectName = this.projectName;
 
   this.locals({
@@ -53,15 +53,15 @@ generator('my-template', function() {
   });
 });
 
-module.exports = generator('my-template');
+module.exports = recipe('my-template');
 ```
 
 Use the template (one way, you can do it however you want):
 
 ``` javascript
-var myTemplateGenerator = require('./myTemplateGenerator');
+var myTemplateRecipe = require('./myTemplateRecipe');
 
-myTemplateGenerator.run(function() {
+myTemplateRecipe.run(function() {
   console.log('complete');
 });
 ```
@@ -69,7 +69,7 @@ myTemplateGenerator.run(function() {
 Potentially later it will just emit JSON for all the actions it performs. This way you can write your own logger for it.
 
 ``` javascript
-var template = generator('my-template').create();
+var template = recipe('my-template').create();
 
 template.on('createFile', function() {
   console.log('created');
