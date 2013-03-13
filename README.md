@@ -14,19 +14,22 @@ npm install tower-recipe
 
 This library doesn't require anything on the command line. It's just the barebones functionality common to recipes, and should be easy to build upon.
 
-Define a custom template:
+Define a custom template (`./my-recipe/index.js`):
 
-``` javascript
-// myTemplateRecipe.js
-var recipe = require('tower-recipe')
-  , incase = require('tower-incase');
+``` js
+/**
+ * Expose `recipe`.
+ */
 
-recipe('my-template', function() {
-  var projectName = this.projectName;
+module.exports = recipe;
+
+function recipe() {
+  var strcase = require('tower-strcase')
+    , projectName = this.projectName;
 
   this.locals({
       projectName: projectName
-    , projectNameTitle: incase.titleCase(projectName)
+    , projectNameTitle: strcase.titleCase(projectName)
     , userRealName: 'Lance Pollard'
     , userTwitterName: 'viatropos'
     , userGitHubName: 'viatropos'
@@ -51,17 +54,16 @@ recipe('my-template', function() {
       this.file('serverTest.js');
     });
   });
-});
-
-module.exports = recipe('my-template');
+}
 ```
 
 Use the template (one way, you can do it however you want):
 
 ``` javascript
-var myTemplateRecipe = require('./myTemplateRecipe');
+var recipe = require('tower-recipe')
+  , myRecipe = recipe('my-recipe');
 
-myTemplateRecipe.run(function() {
+myRecipe.run(function() {
   console.log('complete');
 });
 ```
@@ -69,7 +71,7 @@ myTemplateRecipe.run(function() {
 Potentially later it will just emit JSON for all the actions it performs. This way you can write your own logger for it.
 
 ``` javascript
-var template = recipe('my-template').create();
+var template = recipe('my-recipe').create();
 
 template.on('createFile', function() {
   console.log('created');
