@@ -344,7 +344,7 @@ Recipe.prototype.toOutputPath = function(filePath){
 
 exports.lookup = function(directories, depth){
   directories || (directories = exports.lookupDirectories);
-
+  
   if (depth == null) depth = 2;
 
   directories.forEach(function(directoryPath, i){

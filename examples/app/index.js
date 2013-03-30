@@ -1,0 +1,58 @@
+
+/**
+ * Example:
+ *
+ *    tower create app my-app
+ */
+
+exports.create = function(recipe, args, fn){
+  var strcase = require('tower-strcase')
+    , tinfo = require('tinfo')
+    , now = new Date()
+    , projectName = args[3];
+
+  var options = require('commander')
+    .option('-o, --output-directory [value]', 'Output directory', process.cwd())
+    .option('-b --bin', 'include executable', false)
+    .option('--both', 'include both', false)
+    .parse(args);
+  
+  recipe.outputDirectory(options.outputDirectory);
+
+  recipe
+    .set('projectName', projectName)
+    .set('date', { year: now.getFullYear() })
+    .set('strcase', strcase);
+
+  tinfo(function(info){
+    recipe
+      .set('userRealName', info.name)
+      .set('userTwitterName', info.username)
+      .set('userGitHubName', info.username)
+      .set('userEmail', info.email);
+
+    recipe.directory(projectName, function(){
+      if (options.bin) {
+        recipe.directory('bin', function(){
+          recipe.file(projectName);
+          recipe.executable(projectName);
+        });
+      }
+
+      recipe.template('README.md');
+      recipe.template('component.json');
+      recipe.template('package.json');
+      recipe.copy('.gitignore');
+      recipe.copy('.npmignore');
+      recipe.copy('.travis.yml');
+      recipe.template('index.js');
+
+      recipe.directory('test', function(){
+        recipe.template('tests.js');
+        recipe.template('index.html');
+      });
+    });
+
+    done();
+  }, this);
+}
