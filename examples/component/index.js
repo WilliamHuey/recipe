@@ -24,16 +24,16 @@ exports.create = function(recipe, args, done){
     .set('date', { year: now.getFullYear() })
     .set('strcase', strcase);
 
-  tinfo(function(info) {
+  tinfo(function(info){
     recipe
       .set('userRealName', info.name)
       .set('userTwitterName', info.username)
       .set('userGitHubName', info.username)
       .set('userEmail', info.email);
 
-    recipe.directory(projectName, function() {
+    recipe.directory(projectName, function(){
       if (options.bin) {
-        recipe.directory('bin', function() {
+        recipe.directory('bin', function(){
           recipe.file(projectName);
           recipe.executable(projectName);
         });
@@ -47,7 +47,7 @@ exports.create = function(recipe, args, done){
       recipe.copy('.travis.yml');
       recipe.template('index.js');
 
-      recipe.directory('test', function() {
+      recipe.directory('test', function(){
         recipe.template('tests.js');
         recipe.template('index.html');
       });
