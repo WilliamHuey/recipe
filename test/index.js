@@ -3,6 +3,8 @@ var recipe = require('..')
   , assert = require('assert');
 
 describe('recipe', function() {
+  before(clearTmp);
+
   it('should lookup recipe', function(){
     var recipes = recipe.recipes;
     recipe.lookup();
@@ -17,9 +19,12 @@ describe('recipe', function() {
   });
 
   it('should execute a recipe action', function(){
-    
+    recipe.lookup();
+    var args = ['tower', 'recipe', 'create', 'awesome-recipe', '-o', 'tmp'];
+    recipe.exec('recipe', 'create', args);
+    assert(fs.existsSync('tmp/recipe.js'));
   });
-  
+
   /*
   test('define and run a generator', function(done) {
     var called = 0;
@@ -141,3 +146,14 @@ describe('recipe', function() {
   });
   */
 });
+
+function argv(args) {
+  return ['tower', 'recipe', 'create'].concat(args);
+}
+
+function clearTmp() {
+  if (fs.existsSync('tmp'))
+    fs.removeDirectoryRecursiveSync('tmp');
+  
+  fs.mkdirSync('tmp');
+}

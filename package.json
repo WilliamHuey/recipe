@@ -4,11 +4,12 @@
   "main": "./lib/index.js",
   "dependencies": {
     "tower-fs": ">= 0.1.0",
-    "tower-container": "*"
+    "tower-container": "*",
+    "ejs": "~0.8.3"
   },
   "devDependencies": {
-    "chai": "~1.4.2",
-    "mocha": "~1.8.1"
+    "mocha": "~1.8.1",
+    "commander": "~1.1.1"
   },
   "optionalDependencies": {
     "ejs": "~0.8.3"

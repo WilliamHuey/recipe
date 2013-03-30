@@ -1,29 +1,21 @@
-var recipe = require('tower-recipe');
 
-recipe('<%= projectName %>', function() {
-  var projectName = this.projectName;
+/**
+ * Example:
+ *
+ *    tower create <%= projectName %> my-<%= projectName %>
+ */
 
-  this.locals({
-      projectName: projectName
-  });
+exports.create = function(recipe, args){
+  var options = require('commander')
+    .option('-o, --output-directory [value]', 'Output directory', process.cwd())
+    .parse(args);
 
-  this.directory(projectName, function() {
-    this.directory('bin', function() {
-      this.file(projectName);
-      this.executable(projectName);
-    });
+  recipe.set('projectName', args[3]);
 
-    this.template('README.md');
-    this.template('package.json');
-    this.copy('.gitignore');
-    this.copy('.npmignore');
-    this.copy('.travis.yml');
-    this.template('client.js');
-    this.template('server.js');
+  recipe.outputDirectory(options.outputDirectory);
+  recipe.template('recipe.js');
+}
 
-    this.directory('test', function() {
-      this.file('clientTest.js');
-      this.file('serverTest.js');
-    });
-  });
-});
+exports.remove = function(recipe, args){
+
+}
