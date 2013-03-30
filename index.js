@@ -24,7 +24,7 @@ exports.lookupDirectories = [
     fs.join(process.cwd(), 'recipes')
   , fs.join(process.cwd(), 'lib/recipes')
   , fs.join(process.env.HOME, '.tower/recipes')
-  , fs.join(__dirname, '../examples')
+  , fs.join(__dirname, 'examples')
 ];
 
 /**
