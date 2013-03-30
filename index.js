@@ -198,6 +198,19 @@ Recipe.prototype.executable = function(filePath, chmod){
   return this;
 }
 
+/**
+ * Create and run a recipe from within the currently executing recipe.
+ *
+ * @param {String} name
+ * @api public
+ */
+
+Recipe.prototype.invoke = function(name, action, args, fn){
+  // TODO: pass the locals through
+  exports.exec(name, action, args, fn);
+  return this;
+}
+
 Recipe.prototype.download = function(){
   
 }
