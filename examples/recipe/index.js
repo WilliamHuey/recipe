@@ -6,10 +6,12 @@
  */
 
 exports.create = function(recipe, args){
-  var options = parseArgs(args);
+  var options = parseArgs(args)
+    , projectName = args[4];
+
   recipe.outputDirectory(options.outputDirectory);
-  recipe.set('projectName', args[3]);
-  recipe.directory(args[3], function(){
+  recipe.set('projectName', projectName);
+  recipe.directory(projectName, function(){
     recipe.template('recipe.js');
     recipe.directory('templates');
   });
@@ -18,7 +20,7 @@ exports.create = function(recipe, args){
 exports.remove = function(recipe, args){
   var options = parseArgs(args);
   recipe.outputDirectory(options.outputDirectory);
-  recipe.removeDirectory(args[3]);
+  recipe.removeDirectory(args[4]);
 }
 
 function parseArgs(args) {

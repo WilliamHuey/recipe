@@ -9,7 +9,7 @@ exports.create = function(recipe, args, fn){
   var strcase = require('tower-strcase')
     , tinfo = require('tinfo')
     , now = new Date()
-    , projectName = args[3];
+    , projectName = args[4];
 
   var options = require('commander')
     .option('-o, --output-directory [value]', 'Output directory', process.cwd())

@@ -49,7 +49,7 @@ describe('recipe', function() {
 });
 
 function argv(args) {
-  return ['tower', 'recipe', 'create'].concat(args);
+  return ['node', 'tower', 'recipe', 'create'].concat(args);
 }
 
 function clearTmp() {
