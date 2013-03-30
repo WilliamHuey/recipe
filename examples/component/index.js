@@ -13,9 +13,9 @@ exports.create = function(recipe, args, done){
 
   var options = require('commander')
     .option('-o, --output-directory [value]', 'Output directory', process.cwd())
-    .option('-b --bin', 'include executable', false)
-    .option('--component', 'Add component.json', false)
-    .option('--package', 'Add package.json', true)
+    .option('-b --bin [value]', 'include executable', false)
+    .option('--component [value]', 'Add component.json', false)
+    .option('--package [value]', 'Add package.json', true)
     .option('--both', 'include both', false)
     .parse(args);
   
