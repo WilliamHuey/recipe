@@ -420,7 +420,7 @@ exports.lookup = function(directories, depth){
             data = require(recipePath);
             if (data) {
               data.sourcePath = fs.join(recipePath, 'templates');
-              exports.recipes[data.name || recipeName] = data;
+              exports.recipes[data.cookbook || data.name || recipeName] = data;
             }
           } else {
             if (traverseNext)
