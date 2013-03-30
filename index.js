@@ -68,6 +68,7 @@ Recipe.prototype.get = function(key){
  * Check if file exists.
  *
  * @param {String} filePath
+ * @api public
  */
 
 Recipe.prototype.exists = function(filePath) {
@@ -102,10 +103,14 @@ Recipe.prototype.removeFile = function(filePath) {
 
 /**
  * Copy a file from source to target path.
+ *
+ * @param {String} fromPath
+ * @param {String} [toPath]
+ * @api public
  */
 
 Recipe.prototype.cp =
-Recipe.prototype.copy = function(fromPath, toPath) {
+Recipe.prototype.copy = function(fromPath, toPath){
   fs.copyFileSync(this.toInputPath(fromPath), this.toOutputPath(toPath || fromPath));
   return this;
 }
@@ -118,7 +123,7 @@ Recipe.prototype.copy = function(fromPath, toPath) {
  * @api public
  */
 
-Recipe.prototype.template = function(targetPath, templatePath) {
+Recipe.prototype.template = function(targetPath, templatePath){
   var sourcePath = this.toInputPath(templatePath || targetPath)
     , content = fs.readFileSync(sourcePath).toString()
     , locals = this._locals;
@@ -145,7 +150,7 @@ Recipe.prototype.template = function(targetPath, templatePath) {
 
 Recipe.prototype.inside =
 Recipe.prototype.directory =
-Recipe.prototype.createDirectory = function(directoryPath, block) {
+Recipe.prototype.createDirectory = function(directoryPath, block){
   if (block) {
     var previousTargetPath = this.targetPath
       , newTargetPath = this.toOutputPath(directoryPath)
@@ -167,6 +172,20 @@ Recipe.prototype.createDirectory = function(directoryPath, block) {
 }
 
 /**
+ * Remove directory recursively if it exists.
+ *
+ * @param {String} directoryPath
+ * @api public
+ */
+
+Recipe.prototype.removeDirectory = function(directoryPath){
+  if (fs.existsSync(directoryPath))
+    fs.removeDirectoryRecursiveSync(directoryPath);
+
+  return this;
+}
+
+/**
  * Make a file executable (defaults to chmod 755).
  *
  * @param {String} filePath
@@ -174,9 +193,87 @@ Recipe.prototype.createDirectory = function(directoryPath, block) {
  * @api public
  */
 
-Recipe.prototype.executable = function(filePath, chmod) {
+Recipe.prototype.executable = function(filePath, chmod){
   fs.chmodSync(this.toOutputPath(filePath), chmod || 0755);
   return this;
+}
+
+Recipe.prototype.download = function(){
+  
+}
+
+Recipe.prototype.upload = function(){
+
+}
+
+// http://reiddraper.com/first-chef-recipe/
+Recipe.prototype.package = function(){
+
+}
+
+Recipe.prototype.service = function(name, fn){
+
+}
+
+Recipe.prototype.path = function(){
+
+}
+
+Recipe.prototype.source = function(){
+
+}
+
+Recipe.prototype.owner = function(){
+
+}
+
+Recipe.prototype.group = function(){
+
+}
+
+Recipe.prototype.mode = function(){
+
+}
+
+Recipe.prototype.notifies = function(){
+
+}
+
+Recipe.prototype.bash = function(){
+
+}
+
+Recipe.prototype.cwd = function(){
+
+}
+
+Recipe.prototype.cwd = Recipe.prototype.cd;
+
+Recipe.prototype.code = function(){
+
+}
+
+Recipe.prototype.env = function(){
+
+}
+
+Recipe.prototype.action = function(){
+
+}
+
+Recipe.prototype.platform = function(){
+
+}
+
+// http://docs.opscode.com/resource_remote_file.html
+Recipe.prototype.rights = function(){
+
+}
+
+Recipe.prototype.checksum
+
+Recipe.prototype.content = function(){
+
 }
 
 /**
@@ -232,7 +329,7 @@ Recipe.prototype.toOutputPath = function(filePath){
  * Note: this will probably be moved to a separate library.
  */
 
-exports.lookup = function(directories, depth) {
+exports.lookup = function(directories, depth){
   directories || (directories = exports.lookupDirectories);
 
   if (depth == null) depth = 2;
