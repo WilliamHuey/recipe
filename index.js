@@ -71,7 +71,7 @@ Recipe.prototype.get = function(key){
  * @api public
  */
 
-Recipe.prototype.exists = function(filePath) {
+Recipe.prototype.exists = function(filePath){
   return fs.existsSync(filePath);
 }
 
@@ -96,7 +96,7 @@ Recipe.prototype.createFile = function(filePath, content){
  * @api public
  */
 
-Recipe.prototype.removeFile = function(filePath) {
+Recipe.prototype.removeFile = function(filePath){
   fs.removeFileSync(this.toOutputPath(filePath));
   return this;
 }
@@ -347,7 +347,7 @@ exports.lookup = function(directories, depth){
 
   if (depth == null) depth = 2;
 
-  directories.forEach(function(directoryPath, i) {
+  directories.forEach(function(directoryPath, i){
     directories[i] = fs.absolutePath(directoryPath);
   });
 
@@ -357,7 +357,7 @@ exports.lookup = function(directories, depth){
     var traverseNext = currentDepth < depth;
 
     if (fs.existsSync(directoryPath)) {
-      fs.directoryNamesSync(directoryPath).forEach(function(recipeName) {
+      fs.directoryNamesSync(directoryPath).forEach(function(recipeName){
         if ('templates' == recipeName) return;
 
         recipePath = fs.join(directoryPath, recipeName);
