@@ -2,12 +2,5 @@
   "name": "<%= projectName %>",
   "version": "0.0.1",
   "main": "./index.js",
-  "author": "<%= userRealName %> <<%= userEmail %>>",
-  "devDependencies": {
-    "chai": "~1.4.2",
-    "mocha": "~1.8.1"
-  },
-  "scripts": {
-    "test": "mocha"
-  }
+  "author": "<%= userRealName %> <<%= userEmail %>>"
 }
