@@ -395,6 +395,8 @@ exports.lookup = function(directories, depth){
   directories.forEach(function(directoryPath) {
     lookup(directoryPath, 0);
   });
+
+  return exports;
 }
 
 /**
