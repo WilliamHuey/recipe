@@ -3,7 +3,8 @@
  * Module dependencies.
  */
 
-var fs = require('tower-fs')
+var Emitter = require('emitter-component')
+  , fs = require('tower-fs')
   , container = require('tower-container')
   , slice = [].slice
   , noop = function(){};
@@ -39,6 +40,12 @@ function Recipe(sourcePath) {
   this.sourcePath = sourcePath;
   this.targetPath = process.cwd();
 }
+
+/**
+ * `Emitter` mixin.
+ */
+
+Emitter(Recipe.prototype);
 
 /**
  * @api public
