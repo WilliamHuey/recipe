@@ -9,7 +9,8 @@ var Emitter = require('emitter-component')
   , ansi = require('ansi')
   , cursor = ansi(process.stdout)
   , slice = [].slice
-  , noop = function(){};
+  , noop = function(){}
+  , program = require('commander');
 
 /**
  * Expose `recipe`.
@@ -89,6 +90,9 @@ Recipe.prototype.exists = function(filePath){
 
 Recipe.prototype.file =
 Recipe.prototype.createFile = function(filePath, content){
+  // program.confirm('destination is not empty, continue? ', function(ok){
+  //   process.exit();
+  // });
   filePath = this.toOutputPath(filePath);
   fs.createFileSync(filePath, content);
   this.log('create', filePath);
@@ -166,6 +170,7 @@ Recipe.prototype.createDirectory = function(directoryPath, block){
       , newTargetPath = this.toOutputPath(directoryPath)
       // TODO
       //, previousSourcePath = this.sourcePath;
+    // program.confirm('destination is not empty, continue? ', function(ok){});
 
     fs.createDirectorySync(newTargetPath);
     this.log('create', newTargetPath);

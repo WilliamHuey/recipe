@@ -2,7 +2,7 @@
 /**
  * Example:
  *
- *    tower create recipe my-recipe
+ *    tower create route my-route
  */
 
 exports.create = function(recipe, args){
@@ -12,7 +12,7 @@ exports.create = function(recipe, args){
   recipe.outputDirectory(options.outputDirectory);
   recipe.set('projectName', projectName);
   recipe.directory(projectName, function(){
-    recipe.template('index.js', 'recipe.js');
+    recipe.template('recipe.js');
     recipe.directory('templates');
   });
 }
