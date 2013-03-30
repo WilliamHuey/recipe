@@ -319,7 +319,7 @@ Recipe.prototype.log = function(action, filePath){
     [colors[action]]()
     .write(action)
     .reset()
-    .write(' : ' + filePath)
+    .write(' : ' + fs.relativePath(filePath, process.cwd()))
     .write('\n')
     .reset();
 }

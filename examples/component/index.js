@@ -56,8 +56,8 @@ exports.create = function(recipe, args, done){
       recipe.template('index.js');
 
       recipe.directory('test', function(){
-        recipe.template('index.js');
-        recipe.template('index.html');
+        recipe.template('index.js', 'test.js');
+        recipe.template('index.html', 'test.html');
       });
     });
 
