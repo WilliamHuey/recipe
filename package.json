@@ -10,6 +10,9 @@
   },
   "devDependencies": {
     "mocha": "~1.8.1",
-    "commander": "~1.1.1"
+    "commander": "~1.1.1",
+    "tower-generator": ">= 0.1.0",
+    "tower-strcase": ">= 0.0.1",
+    "tinfo": "*"
   }
 }
