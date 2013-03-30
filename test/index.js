@@ -28,12 +28,22 @@ describe('recipe', function() {
 
   it('should remove a file', function(){
     recipe.exec('recipe', 'create'
+      // TODO: reverse recipe/create (verb first)
       , ['tower', 'recipe', 'create', 'awesome-recipe', '-o', 'tmp']);
     assert(fs.existsSync('tmp/recipe.js'));
 
     recipe.exec('recipe', 'remove'
       , ['tower', 'recipe', 'remove', 'awesome-recipe', '-o', 'tmp']);
     assert(!fs.existsSync('tmp/recipe.js'));
+  });
+
+  it('should create a directory', function(done){
+    recipe.exec('component', 'create'
+      , ['tower', 'component', 'create', 'awesome-component', '-o', 'tmp']
+      , function(){
+        assert(fs.existsSync('tmp/awesome-component/README.md'));
+        done();
+      });
   });
 });
 

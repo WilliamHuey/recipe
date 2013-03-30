@@ -1,46 +1,55 @@
-exports.create = function(recipe, argv, done){
-  var projectName = this.projectName
-    , strcase = require('tower-strcase')
+
+/**
+ * Example:
+ *
+ *    tower create component my-component
+ */
+
+exports.create = function(recipe, args, done){
+  var strcase = require('tower-strcase')
     , tinfo = require('tinfo')
-    , now = new Date();
+    , now = new Date()
+    , projectName = args[3];
 
   var options = require('commander')
+    .option('-o, --output-directory [value]', 'Output directory', process.cwd())
     .option('-b --bin', 'include executable', false)
     .option('--both', 'include both', false)
-    .parse(argv);
+    .parse(args);
+  
+  recipe.outputDirectory(options.outputDirectory);
+
+  recipe
+    .set('projectName', projectName)
+    .set('date', { year: now.getFullYear() })
+    .set('strcase', strcase);
 
   tinfo(function(info) {
-    this.locals({
-        projectName: projectName
-      , userRealName: info.name
-      , userTwitterName: info.username
-      , userGitHubName: info.username
-      , userEmail: info.email
-      , date: {
-          year: now.getFullYear()
-      }
-      , strcase: strcase
-    });
+    recipe
+      .set('userRealName', info.name)
+      .set('userTwitterName', info.username)
+      .set('userGitHubName', info.username)
+      .set('userEmail', info.email);
 
-    this.directory(projectName, function() {
+    recipe.directory(projectName, function() {
       if (options.bin) {
-        this.directory('bin', function() {
-          this.file(projectName);
-          this.executable(projectName);
+        recipe.directory('bin', function() {
+          recipe.file(projectName);
+          recipe.executable(projectName);
         });
       }
 
-      this.template('README.md');
-      this.template('component.json');
-      this.template('package.json');
-      this.copy('.gitignore');
-      this.copy('.npmignore');
-      this.copy('.travis.yml');
-      this.template('index.js');
+      recipe.template('README.md');
+      recipe.template('component.json');
+      recipe.template('package.json');
+      recipe.copy('.gitignore');
+      recipe.copy('.npmignore');
+      recipe.copy('.travis.yml');
+      recipe.template('index.js');
 
-      this.directory('test', function() {
-        this.template('tests.js');
-        this.template('index.html');
+      recipe.directory('test', function() {
+        recipe.template('tests.js');
+        recipe.template('index.html');
       });
     });
 

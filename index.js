@@ -65,6 +65,16 @@ Recipe.prototype.get = function(key){
 }
 
 /**
+ * Check if file exists.
+ *
+ * @param {String} filePath
+ */
+
+Recipe.prototype.exists = function(filePath) {
+  return fs.existsSync(filePath);
+}
+
+/**
  * Create file in the target directory.
  *
  * @param {String} filePath
@@ -91,13 +101,13 @@ Recipe.prototype.removeFile = function(filePath) {
 }
 
 /**
- * Check if file exists.
- *
- * @param {String} filePath
+ * Copy a file from source to target path.
  */
 
-Recipe.prototype.exists = function(filePath) {
-  return fs.existsSync(filePath);
+Recipe.prototype.cp =
+Recipe.prototype.copy = function(fromPath, toPath) {
+  fs.copyFileSync(this.toInputPath(fromPath), this.toOutputPath(toPath || fromPath));
+  return this;
 }
 
 /**
@@ -120,6 +130,52 @@ Recipe.prototype.template = function(targetPath, templatePath) {
   delete locals.filename;
 
   this.createFile(targetPath || templatePath, content);
+  return this;
+}
+
+/**
+ * Create directory if it doesn't already exist.
+ *
+ * Pass a block and all path calculations will be relative
+ * to the new directory in the target.
+ *
+ * @param {String} directoryPath
+ * @api public
+ */
+
+Recipe.prototype.inside =
+Recipe.prototype.directory =
+Recipe.prototype.createDirectory = function(directoryPath, block) {
+  if (block) {
+    var previousTargetPath = this.targetPath
+      , newTargetPath = this.toOutputPath(directoryPath)
+      // TODO
+      //, previousSourcePath = this.sourcePath;
+
+    fs.createDirectorySync(newTargetPath);
+
+    this.targetPath = newTargetPath;
+
+    block.call(this);
+
+    this.targetPath = previousTargetPath;
+  } else {
+    fs.createDirectorySync(this.toOutputPath(directoryPath));
+  }
+
+  return this;
+}
+
+/**
+ * Make a file executable (defaults to chmod 755).
+ *
+ * @param {String} filePath
+ * @param {Number} chmod 0755
+ * @api public
+ */
+
+Recipe.prototype.executable = function(filePath, chmod) {
+  fs.chmodSync(this.toOutputPath(filePath), chmod || 0755);
   return this;
 }
 
