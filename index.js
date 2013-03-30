@@ -89,7 +89,7 @@ Recipe.prototype.createFile = function(filePath, content){
 Recipe.prototype.template = function(targetPath, templatePath) {
   var sourcePath = this.toInputPath(templatePath || targetPath)
     , content = fs.readFileSync(sourcePath).toString()
-    , locals = this.locals();
+    , locals = this._locals;
 
   locals.filename = sourcePath;
 
@@ -99,21 +99,6 @@ Recipe.prototype.template = function(targetPath, templatePath) {
 
   this.createFile(targetPath || templatePath, content);
   return this;
-}
-
-/**
- * Add variables to use in recipe templates.
- *
- * @param {Object} obj
- * @api public
- */
-
-Recipe.prototype.locals = function(obj) {
-  var locals = this._locals;
-  if (obj) {
-    for (var key in obj) locals[key] = obj[key];
-  }
-  return locals;
 }
 
 /**
