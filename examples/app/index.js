@@ -61,6 +61,6 @@ exports.create = function(recipe, args, fn){
       });
     });
 
-    done();
+    fn();
   }, this);
 }
