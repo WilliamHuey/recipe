@@ -178,7 +178,8 @@ exports.lookup = function(directories, depth) {
     directories[i] = fs.absolutePath(directoryPath);
   });
 
-  var recipePath, sourcePath, data;
+  var recipePath, sourcePath, data
+    , self = this;
 
   function lookup(directoryPath, currentDepth, namespace) {
     var traverseNext = currentDepth < depth;
@@ -210,6 +211,7 @@ exports.lookup = function(directories, depth) {
               lookup(recipePath, currentDepth + 1, recipeName);
           }
         } catch (error) {
+          self.emit('error', error);
           if (traverseNext)
             lookup(recipePath, currentDepth + 1, recipeName);
           //
