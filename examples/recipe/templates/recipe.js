@@ -1,6 +1,6 @@
-var generator = require('tower-generator');
+var recipe = require('tower-recipe');
 
-generator('<%= projectName %>', function() {
+recipe('<%= projectName %>', function() {
   var projectName = this.projectName;
 
   this.locals({

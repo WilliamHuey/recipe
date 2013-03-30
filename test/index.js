@@ -1,9 +1,26 @@
-var generator = require('..')
-  , tfs = require('tower-fs')
-  , chai = require('chai')
-  , assert = chai.assert;
+var recipe = require('..')
+  , fs = require('tower-fs')
+  , assert = require('assert');
 
-describe('tgen', function() {
+describe('recipe', function() {
+  it('should lookup recipe', function(){
+    var recipes = recipe.recipes;
+    recipe.lookup();
+
+    assert(recipes.hasOwnProperty('component'));
+    assert(recipes.hasOwnProperty('recipe'));
+
+    assert(recipes.component.create);
+    assert(recipes.recipe.create);
+    assert(recipes.recipe.remove);
+    assert(!recipes.recipe.list);
+  });
+
+  it('should execute a recipe action', function(){
+    
+  });
+  
+  /*
   test('define and run a generator', function(done) {
     var called = 0;
 
@@ -117,7 +134,6 @@ describe('tgen', function() {
     generator.lookupDirectories = lookupDirectories;
   });
 
-  /*
   test('require module inside generator', function(done) {
     generator.lookup();
 

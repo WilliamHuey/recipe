@@ -1,6 +1,6 @@
 # Tower Recipe
 
-Fast code **generator**.
+It's a generator, among other things.
 
 ## Install
 
@@ -18,14 +18,15 @@ Define a custom template (`./my-recipe/index.js`):
 
 ``` js
 /**
- * Expose `recipe`.
+ * Expose `create`.
  */
 
-module.exports = recipe;
+exports.create = function(argv, done){
+  var options = require('commander')
+    .parse(argv);
 
-function recipe() {
   var strcase = require('tower-strcase')
-    , projectName = this.projectName;
+    , projectName = options.args[0];
 
   this.locals({
       projectName: projectName
@@ -54,7 +55,24 @@ function recipe() {
       this.file('serverTest.js');
     });
   });
+
+  done();
 }
+
+/**
+ * Expose `remove`.
+ */
+
+exports.remove = function(argv, done){
+  
+}
+```
+
+In addition to `create` and `remove`, you can use:
+
+```
+watch  // to do something on watch
+update // to update to the latest app structure, for example
 ```
 
 Use the template (one way, you can do it however you want):

@@ -1,4 +1,4 @@
-module.exports = function(done) {
+exports.create = function(recipe, argv, done){
   var projectName = this.projectName
     , strcase = require('tower-strcase')
     , tinfo = require('tinfo')
@@ -7,7 +7,7 @@ module.exports = function(done) {
   var options = require('commander')
     .option('-b --bin', 'include executable', false)
     .option('--both', 'include both', false)
-    .parse(process.argv);
+    .parse(argv);
 
   tinfo(function(info) {
     this.locals({
