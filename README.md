@@ -2,6 +2,10 @@
 
 It's a generator, among other things.
 
+TODO:
+
+- be able to save local generators to global (home directory).
+
 ## Install
 
 Node:
