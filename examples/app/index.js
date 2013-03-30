@@ -59,6 +59,7 @@ exports.create = function(recipe, args, fn){
         .directory('models')
         .directory('routes')
         .directory('templates')
+        .directory('views')
         .directory('public', function(){
           recipe.directory('images')
             .directory('javascripts')
