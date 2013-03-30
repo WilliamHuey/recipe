@@ -11,6 +11,7 @@ describe('recipe', function() {
   it('should lookup recipe', function(){
     var recipes = recipe.recipes;
 
+    assert(recipes.hasOwnProperty('app'));
     assert(recipes.hasOwnProperty('component'));
     assert(recipes.hasOwnProperty('recipe'));
 
