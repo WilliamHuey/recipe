@@ -20,86 +20,94 @@ This library doesn't require anything on the command line. It's just the barebon
 
 Define a custom template (`./my-recipe/index.js`):
 
-``` js
+```js
+
 /**
- * Expose `create`.
+ * Example:
+ *
+ *    tower create app my-app
  */
 
-exports.create = function(argv, done){
-  var options = require('commander')
-    .parse(argv);
-
+exports.create = function(recipe, args, fn){
   var strcase = require('tower-strcase')
-    , projectName = options.args[0];
+    , tinfo = require('tinfo')
+    , now = new Date()
+    , projectName = args[3];
 
-  this.locals({
-      projectName: projectName
-    , projectNameTitle: strcase.titleCase(projectName)
-    , userRealName: 'Lance Pollard'
-    , userTwitterName: 'viatropos'
-    , userGitHubName: 'viatropos'
-  });
+  var options = require('commander')
+    .option('-o, --output-directory [value]', 'Output directory', process.cwd())
+    .option('-b --bin', 'include executable', false)
+    .option('--component', 'Add component.json', false)
+    .option('--package', 'Add package.json', true)
+    .option('--travis', 'Include travis.yml', false)
+    .parse(args);
 
-  this.directory(projectName, function() {
-    this.directory('bin', function() {
-      this.file(projectName);
-      this.executable(projectName);
+  recipe.outputDirectory(options.outputDirectory);
+
+  recipe
+    .set('projectName', projectName)
+    .set('date', { year: now.getFullYear() })
+    .set('strcase', strcase);
+
+  tinfo(function(info){
+    recipe
+      .set('userRealName', info.name)
+      .set('userTwitterName', info.username)
+      .set('userGitHubName', info.username)
+      .set('userEmail', info.email);
+
+    recipe.directory(projectName, function(){
+      if (options.bin) {
+        recipe.directory('bin', function(){
+          recipe.file(projectName);
+          recipe.executable(projectName);
+        });
+      }
+
+      recipe.template('README.md');
+
+      if (options.component)
+        recipe.template('component.json');
+
+      if (options.package)
+        recipe.template('package.json');
+
+      recipe.copy('.gitignore');
+      recipe.copy('.npmignore');
+
+      if (options.travis)
+        recipe.copy('.travis.yml');
+
+      recipe.template('app.js')
+        .directory('models')
+        .directory('routes')
+        .directory('templates')
+        .directory('views')
+        .directory('public', function(){
+          recipe.directory('images')
+            .directory('javascripts')
+            .directory('stylesheets');
+        });
+
+      recipe.directory('test', function(){
+        recipe.template('index.js', 'test.js');
+        recipe.template('index.html', 'test.html');
+      });
     });
 
-    this.template('README.md');
-    this.template('package.json');
-    this.copy('.gitignore');
-    this.copy('.npmignore');
-    this.copy('.travis.yml');
-    this.template('client.js');
-    this.template('server.js');
-
-    this.directory('test', function() {
-      this.file('clientTest.js');
-      this.file('serverTest.js');
-    });
-  });
-
-  done();
-}
-
-/**
- * Expose `remove`.
- */
-
-exports.remove = function(argv, done){
-  
+    fn();
+  }, this);
 }
 ```
 
-In addition to `create` and `remove`, you can use:
+In addition to `create`, you can use:
 
 ```
+remove // to undo create
 watch  // to do something on watch
 update // to update to the latest app structure, for example
+list
+install
+uninstall
+build
 ```
-
-Use the template (one way, you can do it however you want):
-
-``` javascript
-var recipe = require('tower-recipe')
-  , myRecipe = recipe('my-recipe');
-
-myRecipe.run(function() {
-  console.log('complete');
-});
-```
-
-Potentially later it will just emit JSON for all the actions it performs. This way you can write your own logger for it.
-
-``` javascript
-var template = recipe('my-recipe').create();
-
-template.on('createFile', function() {
-  console.log('created');
-});
-```
-
-## TODO
-
-Undo feature where it remembers the last state of your app before making changes, and it can reverse it without having to write teardown code.
