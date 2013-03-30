@@ -14,6 +14,8 @@ exports.create = function(recipe, args, fn){
   var options = require('commander')
     .option('-o, --output-directory [value]', 'Output directory', process.cwd())
     .option('-b --bin', 'include executable', false)
+    .option('--component', 'Add component.json', false)
+    .option('--package', 'Add package.json', true)
     .option('--both', 'include both', false)
     .parse(args);
   
@@ -40,15 +42,21 @@ exports.create = function(recipe, args, fn){
       }
 
       recipe.template('README.md');
-      recipe.template('component.json');
-      recipe.template('package.json');
+
+      if (options.component)
+        recipe.template('component.json');
+
+      if (options.package)
+        recipe.template('package.json');
+
       recipe.copy('.gitignore');
       recipe.copy('.npmignore');
       recipe.copy('.travis.yml');
+
       recipe.template('index.js');
 
       recipe.directory('test', function(){
-        recipe.template('tests.js');
+        recipe.template('index.js');
         recipe.template('index.html');
       });
     });
