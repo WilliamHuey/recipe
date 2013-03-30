@@ -80,11 +80,24 @@ Recipe.prototype.createFile = function(filePath, content){
 
 /**
  * Remove file from the target directory.
+ *
+ * @param {String} filePath
+ * @api public
  */
 
 Recipe.prototype.removeFile = function(filePath) {
   fs.removeFileSync(this.toOutputPath(filePath));
   return this;
+}
+
+/**
+ * Check if file exists.
+ *
+ * @param {String} filePath
+ */
+
+Recipe.prototype.exists = function(filePath) {
+  return fs.existsSync(filePath);
 }
 
 /**
