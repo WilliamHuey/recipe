@@ -6,6 +6,8 @@
 var Emitter = require('emitter-component')
   , fs = require('tower-fs')
   , container = require('tower-container')
+  , ansi = require('ansi')
+  , cursor = ansi(process.stdout)
   , slice = [].slice
   , noop = function(){};
 
@@ -18,6 +20,8 @@ exports = module.exports = recipe;
 function recipe(name, options) {
 
 }
+
+exports.logging = true;
 
 exports.recipes = {};
 
@@ -85,7 +89,9 @@ Recipe.prototype.exists = function(filePath){
 
 Recipe.prototype.file =
 Recipe.prototype.createFile = function(filePath, content){
-  fs.createFileSync(this.toOutputPath(filePath), content);
+  filePath = this.toOutputPath(filePath);
+  fs.createFileSync(filePath, content);
+  this.log('create', filePath);
   return this;
 }
 
@@ -97,7 +103,9 @@ Recipe.prototype.createFile = function(filePath, content){
  */
 
 Recipe.prototype.removeFile = function(filePath){
-  fs.removeFileSync(this.toOutputPath(filePath));
+  filePath = this.toOutputPath(filePath)
+  fs.removeFileSync(filePath);
+  this.log('remove', filePath);
   return this;
 }
 
@@ -111,7 +119,9 @@ Recipe.prototype.removeFile = function(filePath){
 
 Recipe.prototype.cp =
 Recipe.prototype.copy = function(fromPath, toPath){
-  fs.copyFileSync(this.toInputPath(fromPath), this.toOutputPath(toPath || fromPath));
+  toPath = this.toOutputPath(toPath || fromPath);
+  fs.copyFileSync(this.toInputPath(fromPath), toPath);
+  this.log('create', toPath);
   return this;
 }
 
@@ -158,6 +168,7 @@ Recipe.prototype.createDirectory = function(directoryPath, block){
       //, previousSourcePath = this.sourcePath;
 
     fs.createDirectorySync(newTargetPath);
+    this.log('create', newTargetPath);
 
     this.targetPath = newTargetPath;
 
@@ -165,7 +176,9 @@ Recipe.prototype.createDirectory = function(directoryPath, block){
 
     this.targetPath = previousTargetPath;
   } else {
-    fs.createDirectorySync(this.toOutputPath(directoryPath));
+    directoryPath = this.toOutputPath(directoryPath);
+    fs.createDirectorySync(directoryPath);
+    this.log('create', directoryPath);
   }
 
   return this;
@@ -180,9 +193,11 @@ Recipe.prototype.createDirectory = function(directoryPath, block){
 
 Recipe.prototype.removeDirectory = function(directoryPath){
   directoryPath = this.toOutputPath(directoryPath);
-  
-  if (fs.existsSync(directoryPath))
-    fs.removeDirectoryRecursiveSync(directoryPath);
+
+  if (fs.existsSync(directoryPath)) {
+    fs.removeDirectoryRecursiveSync(directoryPath); 
+    this.log('remove', directoryPath);
+  }
 
   return this;
 }
@@ -289,6 +304,28 @@ Recipe.prototype.checksum
 
 Recipe.prototype.content = function(){
 
+}
+
+Recipe.prototype.log = function(action, filePath){
+  if (!exports.logging) return;
+
+  cursor
+    .write('  ')
+    [colors[action]]()
+    .write(action)
+    .reset()
+    .write(' : ' + filePath)
+    .write('\n')
+    .reset();
+}
+
+/**
+ * Colors for actions.
+ */
+
+var colors = {
+    create: 'cyan'
+  , remove: 'red'
 }
 
 /**

@@ -6,7 +6,8 @@
     "tower-fs": ">= 0.1.0",
     "tower-container": "*",
     "ejs": "~0.8.3",
-    "emitter-component": "~1.0.0"
+    "emitter-component": "~1.0.0",
+    "ansi": "~0.1.2"
   },
   "devDependencies": {
     "mocha": "~1.8.1",
