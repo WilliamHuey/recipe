@@ -23,24 +23,24 @@ describe('recipe', function() {
 
   it('should create a file', function(){
     recipe.exec('recipe', 'create'
-      , ['tower', 'recipe', 'create', 'awesome-recipe', '-o', 'tmp']);
+      , args('recipe', 'create', 'awesome-recipe', '-o', 'tmp'));
     assert(fs.existsSync('tmp/awesome-recipe/recipe.js'));
   });
 
   it('should remove a file', function(){
     recipe.exec('recipe', 'create'
       // TODO: reverse recipe/create (verb first)
-      , ['tower', 'recipe', 'create', 'awesome-recipe', '-o', 'tmp']);
+      , args('recipe', 'create', 'awesome-recipe', '-o', 'tmp'));
     assert(fs.existsSync('tmp/awesome-recipe/recipe.js'));
 
     recipe.exec('recipe', 'remove'
-      , ['tower', 'recipe', 'remove', 'awesome-recipe', '-o', 'tmp']);
+      , args('recipe', 'remove', 'awesome-recipe', '-o', 'tmp'));
     assert(!fs.existsSync('tmp/awesome-recipe'));
   });
 
   it('should create a directory', function(done){
     recipe.exec('component', 'create'
-      , ['tower', 'component', 'create', 'awesome-component', '-o', 'tmp']
+      , args('component', 'create', 'awesome-component', '-o', 'tmp')
       , function(){
         assert(fs.existsSync('tmp/awesome-component/README.md'));
         done();
@@ -48,8 +48,8 @@ describe('recipe', function() {
   });
 });
 
-function argv(args) {
-  return ['node', 'tower', 'recipe', 'create'].concat(args);
+function args() {
+  return ['node', 'tower'].concat(Array.prototype.slice.call(arguments));
 }
 
 function clearTmp() {
