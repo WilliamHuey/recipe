@@ -79,6 +79,15 @@ Recipe.prototype.createFile = function(filePath, content){
 }
 
 /**
+ * Remove file from the target directory.
+ */
+
+Recipe.prototype.removeFile = function(filePath) {
+  fs.removeFileSync(this.toOutputPath(filePath));
+  return this;
+}
+
+/**
  * Create a new file from a template (ejs currently).
  *
  * @param {String} targetPath
@@ -163,8 +172,7 @@ exports.lookup = function(directories, depth) {
     directories[i] = fs.absolutePath(directoryPath);
   });
 
-  var recipePath, sourcePath, data
-    , self = this;
+  var recipePath, sourcePath, data;
 
   function lookup(directoryPath, currentDepth, namespace) {
     var traverseNext = currentDepth < depth;
@@ -196,7 +204,7 @@ exports.lookup = function(directories, depth) {
               lookup(recipePath, currentDepth + 1, recipeName);
           }
         } catch (error) {
-          self.emit('error', error);
+          // self.emit('error', error);
           if (traverseNext)
             lookup(recipePath, currentDepth + 1, recipeName);
           //
