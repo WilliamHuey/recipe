@@ -1,7 +1,7 @@
 {
   "name": "tower-recipe",
   "version": "0.1.0-5",
-  "main": "./lib/index.js",
+  "main": "./index.js",
   "dependencies": {
     "tower-fs": ">= 0.1.0",
     "tower-container": "*",
