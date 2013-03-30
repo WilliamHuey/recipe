@@ -24,18 +24,18 @@ describe('recipe', function() {
   it('should create a file', function(){
     recipe.exec('recipe', 'create'
       , ['tower', 'recipe', 'create', 'awesome-recipe', '-o', 'tmp']);
-    assert(fs.existsSync('tmp/recipe.js'));
+    assert(fs.existsSync('tmp/awesome-recipe/recipe.js'));
   });
 
   it('should remove a file', function(){
     recipe.exec('recipe', 'create'
       // TODO: reverse recipe/create (verb first)
       , ['tower', 'recipe', 'create', 'awesome-recipe', '-o', 'tmp']);
-    assert(fs.existsSync('tmp/recipe.js'));
+    assert(fs.existsSync('tmp/awesome-recipe/recipe.js'));
 
     recipe.exec('recipe', 'remove'
       , ['tower', 'recipe', 'remove', 'awesome-recipe', '-o', 'tmp']);
-    assert(!fs.existsSync('tmp/recipe.js'));
+    assert(!fs.existsSync('tmp/awesome-recipe'));
   });
 
   it('should create a directory', function(done){

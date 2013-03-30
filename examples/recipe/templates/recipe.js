@@ -9,13 +9,16 @@ exports.create = function(recipe, args){
   var options = parseArgs(args);
   recipe.outputDirectory(options.outputDirectory);
   recipe.set('projectName', args[3]);
-  recipe.template('recipe.js');
+  recipe.directory(args[3], function(){
+    recipe.template('recipe.js');
+    recipe.directory('templates');
+  });
 }
 
 exports.remove = function(recipe, args){
   var options = parseArgs(args);
   recipe.outputDirectory(options.outputDirectory);
-  recipe.removeFile('recipe.js');
+  recipe.removeDirectory(args[3]);
 }
 
 function parseArgs(args) {

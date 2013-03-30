@@ -179,6 +179,8 @@ Recipe.prototype.createDirectory = function(directoryPath, block){
  */
 
 Recipe.prototype.removeDirectory = function(directoryPath){
+  directoryPath = this.toOutputPath(directoryPath);
+  
   if (fs.existsSync(directoryPath))
     fs.removeDirectoryRecursiveSync(directoryPath);
 
