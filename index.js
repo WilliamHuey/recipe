@@ -420,7 +420,7 @@ exports.lookup = function(directories, depth){
             data = require(recipePath);
             if (data) {
               data.sourcePath = fs.join(recipePath, 'templates');
-              exports.recipes[recipeName] = data;
+              exports.recipes[data.name || recipeName] = data;
             }
           } else {
             if (traverseNext)
@@ -454,6 +454,9 @@ exports.lookup = function(directories, depth){
  */
 
 exports.exec = function(name, action, args, fn){
+  if (!exports.recipes[name])
+    throw new Error('Recipe `' + name + '` not found in ' + Object.keys(exports.recipes).join(', '));
+
   var data = exports.recipes[name]
     , method = data[action]
     , recipe = new Recipe(data.sourcePath);
