@@ -24,7 +24,9 @@ exports.create = function(recipe, args, done){
   recipe
     .set('projectName', projectName)
     .set('date', { year: now.getFullYear() })
-    .set('strcase', strcase);
+    .set('strcase', strcase)
+    .set('component', options.component)
+    .set('pkg', options.package);
 
   tinfo(function(info){
     recipe

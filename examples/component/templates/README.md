@@ -1,25 +1,52 @@
 # <%= strcase.titleCase(projectName) %>
 
-[![Build Status](https://secure.travis-ci.org/<%= userGitHubName %>/<%= projectName %>.png)](http://travis-ci.org/<%= userGitHubName %>/<%= projectName %>)
-
 ## Installation
+<% if (pkg) { %>
+node.js:
 
-```
+```bash
 npm install <%= projectName %>
 ```
+<% } %><% if (component) { %>
+browser:
 
-## Quick Start
+```bash
+component install <%= projectName %>
+```
+<% } -%>
 
-``` javascript
-var <%= strcase.camelCase(projectName) %> = require('<%= projectName %>');
+## Example
+
+```js
+var project = require('<%= projectName %>');
 ```
 
-## Running Tests
+## API
 
-```
-mocha
+Example API methods.
+
+### .on(event, fn, [capture])
+
+Short description of some method:
+
+```js
+project.on('event', function(e){
+
+});
 ```
 
-## License
+### .on(event, selector, fn, [capture])
+
+Another description:
+
+```js
+project.on('event', 'a.remove', function(e){
+
+});
+```
+
+## Notes
+
+## Licence
 
 MIT
