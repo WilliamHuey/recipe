@@ -4,13 +4,12 @@
  */
 
 var Emitter = require('emitter-component')
+  , program = require('commander')
   , fs = require('tower-fs')
-  , container = require('tower-container')
   , ansi = require('ansi')
   , cursor = ansi(process.stdout)
   , slice = [].slice
-  , noop = function(){}
-  , program = require('commander');
+  , noop = function(){};
 
 /**
  * Expose `recipe`.
