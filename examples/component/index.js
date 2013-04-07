@@ -17,15 +17,18 @@ exports.create = function(recipe, args, done){
     .option('--component [value]', 'Add component.json', false)
     .option('--package [value]', 'Add package.json', true)
     .option('--travis [value]', 'Add travis.yml', false)
+    .option('--namespace [value]', 'Namespace for component');
     .parse(args);
   
   recipe.outputDirectory(options.outputDirectory);
 
   recipe
     .set('projectName', projectName)
+    .set('namespace', options.namespace)
     .set('date', { year: now.getFullYear() })
     .set('strcase', strcase)
     .set('component', options.component)
+    .set('componentName', options.namespace ? [options.namespace, projectName].join('/') : projectName)
     .set('pkg', options.package);
 
   tinfo(function(info){

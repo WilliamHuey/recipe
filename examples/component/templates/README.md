@@ -11,7 +11,7 @@ npm install <%= projectName %>
 browser:
 
 ```bash
-component install <%= projectName %>
+component install <%= componentName %>
 ```
 <% } -%>
 

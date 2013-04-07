@@ -1,6 +1,6 @@
 {
   "name": "<%= projectName %>",
-  "repo": "<%= strcase.pathCase(projectName) %>",
+  "repo": "<%= componentName %>",
   "description": "<%= strcase.titleCase(projectName) %> component",
   "version": "0.0.1",
   "keywords": [],
@@ -9,10 +9,8 @@
     "component/emitter": "*"
   },
   "development": {
-    "visionmedia/mocha": "*",
-    "chaijs/chai": "*"
+    "visionmedia/mocha": "*"
   },
   "scripts": ["index.js"],
-  "styles": [],
   "license": "MIT"
 }
