@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 
-var fs = require('fs');
+// var fs = require('fs');
 
 /**
  * Expose `<%= strcase.camelCase(projectName) %>`.

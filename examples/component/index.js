@@ -16,7 +16,7 @@ exports.create = function(recipe, args, done){
     .option('-b --bin [value]', 'include executable', false)
     .option('--component [value]', 'Add component.json', false)
     .option('--package [value]', 'Add package.json', true)
-    .option('--both', 'include both', false)
+    .option('--travis [value]', 'Add travis.yml', false)
     .parse(args);
   
   recipe.outputDirectory(options.outputDirectory);
@@ -53,13 +53,16 @@ exports.create = function(recipe, args, done){
 
       recipe.copy('.gitignore');
       recipe.copy('.npmignore');
-      recipe.copy('.travis.yml');
+
+      if (options.travis)
+        recipe.copy('.travis.yml');
 
       recipe.template('index.js');
 
       recipe.directory('test', function(){
         recipe.template('index.js', 'test.js');
-        recipe.template('index.html', 'test.html');
+        if (options.component)
+          recipe.template('index.html', 'test.html');
       });
     });
 

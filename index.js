@@ -242,43 +242,47 @@ Recipe.prototype.upload = function(){
 
 // http://reiddraper.com/first-chef-recipe/
 Recipe.prototype.package = function(){
-
+  return this;
 }
 
 Recipe.prototype.service = function(name, fn){
-
+  return this;
 }
 
 Recipe.prototype.path = function(){
-
+  return this;
 }
 
 Recipe.prototype.source = function(){
-
+  return this;
 }
 
 Recipe.prototype.owner = function(){
-
+  return this;
 }
 
 Recipe.prototype.group = function(){
-
+  return this;
 }
 
 Recipe.prototype.mode = function(){
-
+  return this;
 }
 
 Recipe.prototype.notifies = function(){
-
+  return this;
 }
 
 Recipe.prototype.bash = function(){
-
+  return this;  
 }
 
 Recipe.prototype.cwd = function(){
+  return this;
+}
 
+Recipe.prototype.recursive = function(){
+  return this;
 }
 
 Recipe.prototype.cwd = Recipe.prototype.cd;
@@ -297,6 +301,43 @@ Recipe.prototype.action = function(){
 
 Recipe.prototype.platform = function(){
 
+}
+
+/**
+ * Invoke another recipe.
+ */
+
+Recipe.prototype.include = function(name){
+  //this.invoke
+  return this;
+}
+
+/**
+ * Create a system user.
+ */
+
+Recipe.prototype.user = function(){
+  return this;
+}
+
+Recipe.prototype.gid = function(){
+  return this;
+}
+
+Recipe.prototype.home = function(){
+  return this;
+}
+
+Recipe.prototype.shell = function(){
+  return this;
+}
+
+Recipe.prototype.comment = function(){
+  return this;
+}
+
+Recipe.prototype.supports = function(){
+  return this;
 }
 
 // http://docs.opscode.com/resource_remote_file.html
