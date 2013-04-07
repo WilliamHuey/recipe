@@ -17,7 +17,7 @@ exports.create = function(recipe, args, done){
     .option('--component [value]', 'Add component.json', false)
     .option('--package [value]', 'Add package.json', true)
     .option('--travis [value]', 'Add travis.yml', false)
-    .option('--namespace [value]', 'Namespace for component');
+    .option('--namespace [value]', 'Namespace for component')
     .parse(args);
   
   recipe.outputDirectory(options.outputDirectory);
