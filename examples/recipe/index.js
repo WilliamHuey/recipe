@@ -23,6 +23,25 @@ exports.remove = function(recipe, args){
   recipe.removeDirectory(args[4]);
 }
 
+/**
+ * Install a recipe into $HOME/.tower/recipes
+ */
+
+exports.install = function(recipe, args){
+  var path = require('path');
+  var projectName = args[4];
+
+  process.chdir(path.join(process.env.HOME, '.tower/recipes'));
+
+  var spawn = require('child_process').spawn;
+  
+  spawn('npm', ['install', projectName], { stdio: 'inherit' })
+    .on('exit', function(){
+      // XXX: need to update the recipe so it looks in node_modules.
+      spawn('mv', [path.join('node_modules', projectName), projectName]);
+    });
+}
+
 function parseArgs(args) {
   var options = require('commander')
     .option('-o, --output-directory [value]', 'Output directory', process.cwd())
