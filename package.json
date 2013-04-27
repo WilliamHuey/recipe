@@ -5,7 +5,7 @@
   "dependencies": {
     "tower-fs": ">= 0.1.0",
     "ejs": "~0.8.3",
-    "emitter-component": "~1.0.0",
+    "tower-emitter": "~1.0.0",
     "ansi": "~0.1.2"
   },
   "devDependencies": {

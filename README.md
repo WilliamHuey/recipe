@@ -111,3 +111,7 @@ install
 uninstall
 build
 ```
+
+## Notes
+
+- https://github.com/sprinkle-tool/sprinkle

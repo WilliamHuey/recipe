@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 
-var Emitter = require('emitter-component')
+var Emitter = require('tower-emitter')
   , program = require('commander')
   , fs = require('tower-fs')
   , ansi = require('ansi')
@@ -26,9 +26,9 @@ exports.logging = true;
 exports.recipes = {};
 
 exports.lookupDirectories = [
-    fs.join(process.cwd(), 'recipes')
-  , fs.join(process.cwd(), 'lib/recipes')
-  , fs.join(process.env.HOME, '.tower/recipes')
+    fs.join(process.cwd(), 'cookbooks')
+  , fs.join(process.cwd(), 'lib/cookbooks')
+  , fs.join(process.env.HOME, '.tower/node_modules')
   , fs.join(__dirname, 'examples')
 ];
 
@@ -167,7 +167,7 @@ Recipe.prototype.createDirectory = function(directoryPath, block){
   if (block) {
     var previousTargetPath = this.targetPath
       , newTargetPath = this.toOutputPath(directoryPath)
-      // TODO
+      // XXX
       //, previousSourcePath = this.sourcePath;
     // program.confirm('destination is not empty, continue? ', function(ok){});
 
@@ -227,7 +227,7 @@ Recipe.prototype.executable = function(filePath, chmod){
  */
 
 Recipe.prototype.invoke = function(name, action, args, fn){
-  // TODO: pass the locals through
+  // XXX: pass the locals through
   exports.exec(name, action, args, fn);
   return this;
 }
@@ -418,69 +418,56 @@ Recipe.prototype.toOutputPath = function(filePath){
 }
 
 /**
- * Searches through these directories to find templates:
- *     - ./recipes
- *     - ./lib/recipes
- *     - ~/.tower/recipes
+ * Lookup a single recipe.
  *
- * Note: this will probably be moved to a separate library.
+ * This is resolved from the command line.
  */
 
-exports.lookup = function(directories, depth){
-  directories || (directories = exports.lookupDirectories);
-  
-  if (depth == null) depth = 2;
+exports.find = function(name, directories){
+  var parts = name.split(':')
+    , key = parts.shift()
+    , paths
+    , cookbook;
 
-  directories.forEach(function(directoryPath, i){
-    directories[i] = fs.absolutePath(directoryPath);
+  directories || (directories = exports.lookupDirectories);
+
+  // XXX: should cache this in ~/.tower/config/packages.json or something.
+  directories.forEach(function(directory){
+    fs.directoryPathsSync(directory).forEach(function(path){
+      var pkg = fs.join(path, 'package.json');
+      pkg = fs.existsSync(pkg) && require(pkg);
+
+      if (pkg && key === pkg.cookbook) {
+        cookbook = require(path);
+        // namespace
+        cookbook.ns = pkg.cookbook;
+        // XXX: where templates are.
+        cookbook.sourcePath = fs.join(path, 'templates');
+      }
+
+      return !cookbook;
+    });
+
+    return !cookbook; // exit if one was found.
   });
 
-  var recipePath, sourcePath, data;
-
-  function lookup(directoryPath, currentDepth, namespace) {
-    var traverseNext = currentDepth < depth;
-
-    if (fs.existsSync(directoryPath)) {
-      fs.directoryNamesSync(directoryPath).forEach(function(recipeName){
-        if ('templates' == recipeName) return;
-
-        recipePath = fs.join(directoryPath, recipeName);
-
-        // TODO: somehow handle looking up node_modules
-        if (directoryPath.match(/(node_modules)$/))
-          return;
-
-        if (namespace)
-          recipeName = namespace + ':' + recipeName;
-
-        try {
-          sourcePath = fs.join(recipePath, 'index.js'); //fs.join(recipePath, 'templates');
-
-          if (fs.existsSync(sourcePath)) {
-            data = require(recipePath);
-            if (data) {
-              data.sourcePath = fs.join(recipePath, 'templates');
-              exports.recipes[data.cookbook || data.name || recipeName] = data;
-            }
-          } else {
-            if (traverseNext)
-              lookup(recipePath, currentDepth + 1, recipeName);
-          }
-        } catch (error) {
-          // self.emit('error', error);
-          if (traverseNext)
-            lookup(recipePath, currentDepth + 1, recipeName);
-          //
-        }
-      });
-    }
+  if (!cookbook) {
+    console.log('Cookbook [' + name + '] not found.')
+    process.exit();
   }
 
-  directories.forEach(function(directoryPath) {
-    lookup(directoryPath, 0);
-  });
+  // nested cookbook.
+  if (parts.length) {
+    name = parts.join(':');
+    if (cookbook.aliases) {
+      while (cookbook.aliases[name])
+        name = cookbook.aliases[name];
+    }
+    // XXX: cache these paths, for faster lookup later.
+    cookbook = require(cookbook(name));
+  }
 
-  return exports;
+  return cookbook;
 }
 
 /**
@@ -494,15 +481,19 @@ exports.lookup = function(directories, depth){
  */
 
 exports.exec = function(name, action, args, fn){
-  if (!exports.recipes[name])
-    throw new Error('Recipe `' + name + '` not found in ' + Object.keys(exports.recipes).join(', '));
+  var cookbook = exports.find(name)
+    , method = cookbook[action];
 
-  var data = exports.recipes[name]
-    , method = data[action]
-    , recipe = new Recipe(data.sourcePath);
+  if (!method) {
+    console.log('Cookbook [' + name + '] action [' + action + '] is not defined.');
+    process.exit();
+  }
+  
+  // XXX: handle source path again.
+  var recipe = new Recipe(cookbook.sourcePath);
 
-  // TODO: for nested methods, handle callback.
-  if (3 == method.length)
+  // XXX: for nested methods, handle callback.
+  if (3 === method.length)
     method.call(recipe, recipe, args, fn || noop);
   else
     method.call(recipe, recipe, args);
