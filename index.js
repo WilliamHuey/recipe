@@ -213,9 +213,12 @@ Recipe.prototype.executable = function(filePath, chmod){
  * @api public
  */
 
-Recipe.prototype.invoke = function(name, action, args, fn){
+Recipe.prototype.exec = function(name, action, args, fn){
   // XXX: pass the locals through
-  exports.exec(name, action, args, fn);
+  require('child_process')
+    .spawn('tower', [action, name].concat(args), { stdio: 'inherit' })
+    .on('exit', fn);
+
   return this;
 }
 
@@ -336,6 +339,12 @@ Recipe.prototype.checksum
 
 Recipe.prototype.content = function(){
 
+}
+
+// get or set data from ~/.tower/config/data
+Recipe.prototype.data = function(obj){
+  //if ('string' === obj)
+  return this;
 }
 
 Recipe.prototype.log = function(action, filePath){
