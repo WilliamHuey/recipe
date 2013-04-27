@@ -355,9 +355,14 @@ Recipe.prototype.log = function(action, filePath){
     [colors[action]]()
     .write(action)
     .reset()
-    .write(' : ' + fs.relativePath(filePath, process.cwd()))
+    .write(' : ' + (this._logPath || fs.relativePath)(filePath, process.cwd()))
     .write('\n')
     .reset();
+}
+
+Recipe.prototype.logPath = function(fn){
+  this._logPath = fn;
+  return;
 }
 
 /**
