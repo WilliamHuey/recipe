@@ -1,8 +1,8 @@
-var recipe = require('..')
-  , fs = require('tower-fs')
-  , assert = require('assert');
+var recipe = require('..');
+var fs = require('tower-fs');
+var assert = require('assert');
 
-describe('recipe', function() {
+describe('recipe', function(){
   before(clearTmp);
   before(function(){
     recipe.lookup();

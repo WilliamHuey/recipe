@@ -3,13 +3,13 @@
  * Module dependencies.
  */
 
-var Emitter = require('tower-emitter')
-  , program = require('commander')
-  , fs = require('tower-fs')
-  , ansi = require('ansi')
-  , cursor = ansi(process.stdout)
-  , slice = [].slice
-  , noop = function(){};
+var Emitter = require('tower-emitter');
+var program = require('commander');
+var fs = require('tower-fs');
+var ansi = require('ansi');
+var cursor = ansi(process.stdout);
+var slice = [].slice;
+var noop = function(){};
 
 /**
  * Expose `Recipe`.
@@ -45,7 +45,7 @@ Emitter(Recipe.prototype);
 Recipe.prototype.set = function(key, val){
   this._locals[key] = val;
   return this;
-}
+};
 
 /**
  * @api public
@@ -53,7 +53,7 @@ Recipe.prototype.set = function(key, val){
 
 Recipe.prototype.get = function(key){
   return this._locals[key];
-}
+};
 
 /**
  * Check if file exists.
@@ -64,7 +64,7 @@ Recipe.prototype.get = function(key){
 
 Recipe.prototype.exists = function(filePath){
   return fs.existsSync(filePath);
-}
+};
 
 /**
  * Create file in the target directory.
@@ -83,7 +83,7 @@ Recipe.prototype.createFile = function(filePath, content){
   fs.createFileSync(filePath, content);
   this.log('create', filePath);
   return this;
-}
+};
 
 /**
  * Remove file from the target directory.
@@ -97,7 +97,7 @@ Recipe.prototype.removeFile = function(filePath){
   fs.removeFileSync(filePath);
   this.log('remove', filePath);
   return this;
-}
+};
 
 /**
  * Copy a file from source to target path.
@@ -113,7 +113,7 @@ Recipe.prototype.copy = function(fromPath, toPath){
   fs.copyFileSync(this.toInputPath(fromPath), toPath);
   this.log('create', toPath);
   return this;
-}
+};
 
 /**
  * Create a new file from a template (ejs currently).
@@ -136,7 +136,7 @@ Recipe.prototype.template = function(targetPath, templatePath){
 
   this.createFile(targetPath || templatePath, content);
   return this;
-}
+};
 
 /**
  * Create directory if it doesn't already exist.
@@ -173,7 +173,7 @@ Recipe.prototype.createDirectory = function(directoryPath, block){
   }
 
   return this;
-}
+};
 
 /**
  * Remove directory recursively if it exists.
@@ -191,7 +191,7 @@ Recipe.prototype.removeDirectory = function(directoryPath){
   }
 
   return this;
-}
+};
 
 /**
  * Make a file executable (defaults to chmod 755).
@@ -204,7 +204,7 @@ Recipe.prototype.removeDirectory = function(directoryPath){
 Recipe.prototype.executable = function(filePath, chmod){
   fs.chmodSync(this.toOutputPath(filePath), chmod || 0755);
   return this;
-}
+};
 
 /**
  * Create and run a recipe from within the currently executing recipe.
@@ -220,78 +220,78 @@ Recipe.prototype.exec = function(name, action, args, fn){
     .on('exit', fn);
 
   return this;
-}
+};
 
 Recipe.prototype.download = function(){
   
-}
+};
 
 Recipe.prototype.upload = function(){
 
-}
+};
 
 // http://reiddraper.com/first-chef-recipe/
 Recipe.prototype.package = function(){
   return this;
-}
+};
 
 Recipe.prototype.service = function(name, fn){
   return this;
-}
+};
 
 Recipe.prototype.path = function(){
   return this;
-}
+};
 
 Recipe.prototype.source = function(){
   return this;
-}
+};
 
 Recipe.prototype.owner = function(){
   return this;
-}
+};
 
 Recipe.prototype.group = function(){
   return this;
-}
+};
 
 Recipe.prototype.mode = function(){
   return this;
-}
+};
 
 Recipe.prototype.notifies = function(){
   return this;
-}
+};
 
 Recipe.prototype.bash = function(){
   return this;  
-}
+};
 
 Recipe.prototype.cwd = function(){
   return this;
-}
+};
 
 Recipe.prototype.recursive = function(){
   return this;
-}
+};
 
 Recipe.prototype.cwd = Recipe.prototype.cd;
 
 Recipe.prototype.code = function(){
 
-}
+};
 
 Recipe.prototype.env = function(){
 
-}
+};
 
 Recipe.prototype.action = function(){
 
-}
+};
 
 Recipe.prototype.platform = function(){
 
-}
+};
 
 /**
  * Invoke another recipe.
@@ -300,7 +300,7 @@ Recipe.prototype.platform = function(){
 Recipe.prototype.include = function(name){
   //this.invoke
   return this;
-}
+};
 
 /**
  * Create a system user.
@@ -308,44 +308,44 @@ Recipe.prototype.include = function(name){
 
 Recipe.prototype.user = function(){
   return this;
-}
+};
 
 Recipe.prototype.gid = function(){
   return this;
-}
+};
 
 Recipe.prototype.home = function(){
   return this;
-}
+};
 
 Recipe.prototype.shell = function(){
   return this;
-}
+};
 
 Recipe.prototype.comment = function(){
   return this;
-}
+};
 
 Recipe.prototype.supports = function(){
   return this;
-}
+};
 
 // http://docs.opscode.com/resource_remote_file.html
 Recipe.prototype.rights = function(){
 
-}
+};
 
-Recipe.prototype.checksum
+Recipe.prototype.checksum;
 
 Recipe.prototype.content = function(){
 
-}
+};
 
 // get or set data from ~/.tower/config/data
 Recipe.prototype.data = function(obj){
   //if ('string' === obj)
   return this;
-}
+};
 
 Recipe.prototype.log = function(action, filePath){
   if (!Recipe.logging) return;
@@ -358,21 +358,21 @@ Recipe.prototype.log = function(action, filePath){
     .write(' : ' + (this._logPath || fs.relativePath)(filePath, process.cwd()))
     .write('\n')
     .reset();
-}
+};
 
 Recipe.prototype.logPath = function(fn){
   this._logPath = fn;
   return;
-}
+};
 
 /**
  * Colors for actions.
  */
 
 var colors = {
-    create: 'cyan'
-  , remove: 'red'
-}
+  create: 'cyan',
+  remove: 'red'
+};
 
 /**
  * Set the `sourcePath` in a chainable way.
@@ -383,7 +383,7 @@ var colors = {
 Recipe.prototype.inputDirectory = function(filePath){
   this.sourcePath = filePath;
   return this;
-}
+};
 
 /**
  * Set the `targetPath` in a chainable way.
@@ -394,7 +394,7 @@ Recipe.prototype.inputDirectory = function(filePath){
 Recipe.prototype.outputDirectory = function(filePath){
   this.targetPath = filePath;
   return this;
-}
+};
 
 /**
  * Convert a file path to the absolute path in the source directory.
@@ -405,7 +405,7 @@ Recipe.prototype.outputDirectory = function(filePath){
 
 Recipe.prototype.toInputPath = function(filePath){
   return fs.join(this.sourcePath, filePath);
-}
+};
 
 /**
  * Convert a file path to the absolute path in the target directory.
@@ -416,4 +416,4 @@ Recipe.prototype.toInputPath = function(filePath){
 
 Recipe.prototype.toOutputPath = function(filePath){
   return fs.join(this.targetPath, filePath);
-}
+};
