@@ -1,11 +1,11 @@
 {
   "name": "tower-recipe",
-  "version": "0.1.0-5",
+  "version": "0.5.0pre",
   "main": "./index.js",
   "dependencies": {
-    "tower-fs": ">= 0.1.0",
+    "tower-fs": "0.5.0pre",
     "ejs": "~0.8.3",
-    "tower-emitter": "~1.0.0",
+    "tower-emitter": "0.5.0pre",
     "ansi": "~0.1.2"
   },
   "devDependencies": {
